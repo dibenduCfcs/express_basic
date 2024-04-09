@@ -54,8 +54,8 @@ studentRouter.post("/login", async (req, res, next) => {
   loginRepo(req, res, next);
 });
 
-studentRouter.post("/getProfileDetail", (req, res, next) => {
-  getProfileDetailRepo(req, res, next);
-});
+// studentRouter.post("/getProfileDetail", (req, res, next) => {
+//   getProfileDetailRepo(req, res, next);
+// });
 
 module.exports = studentRouter;
