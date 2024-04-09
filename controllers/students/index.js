@@ -9,11 +9,12 @@ const {
   addNewUserRepo,
   loginRepo,
   getProfileDetailRepo,
+  getAllStudentRepo,
 } = require("../../repository/studentRepo");
 const connectDb = require("../../database");
 const studentRouter = express.Router();
 const students = [];
-studentRouter.get("/", (req, res) => {
+studentRouter.get("/test", (req, res) => {
   let sortBy = req.query.sortBy;
   if (sortBy === "1") {
     res.json({ message: "API is Working.", data: [1, 2, 3, 4, 5, 6] });
@@ -22,7 +23,7 @@ studentRouter.get("/", (req, res) => {
   }
 });
 
-studentRouter.get("/:id", (req, res) => {
+studentRouter.get("/test:id", (req, res) => {
   let id = req.params.id;
   res.json({ message: "API is Working.", data: { id: id } });
 });
@@ -56,6 +57,10 @@ studentRouter.post("/login", async (req, res, next) => {
 
 studentRouter.post("/getProfileDetail", (req, res, next) => {
   getProfileDetailRepo(req, res, next);
+});
+
+studentRouter.get("/", (req, res, next) => {
+  getAllStudentRepo(req, res, next);
 });
 
 module.exports = studentRouter;

@@ -119,5 +119,32 @@ const getProfileDetailRepo = async (req, res, next) => {
     next(error);
   }
 };
+const getAllStudentRepo = async (req, res, next) => {
+  try {
+    mongoose.connect(connectionString.collegeErp_server);
+    const users = await User.find({}).select({
+      _id: 1,
+      name: 1,
+      username: 1,
+      email: 1,
+      mobile: 1,
+    });
 
-module.exports = { addNewUserRepo, loginRepo, getProfileDetailRepo };
+    return res.status(200).json({
+      meta: {
+        status_code: 1,
+        status_message: "User Profile Fetch Successfully.",
+      },
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  addNewUserRepo,
+  loginRepo,
+  getProfileDetailRepo,
+  getAllStudentRepo,
+};
