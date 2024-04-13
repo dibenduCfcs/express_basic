@@ -25,7 +25,7 @@ const validateBody = (req, type) => {
 };
 
 const generateJWTToken = (_payload) => {
-  let payload = { userId: _payload };
+  let payload = { ..._payload };
   return jwt.sign(payload, singingKey, {
     algorithm: "HS256",
     expiresIn: "24 hrs",

@@ -5,6 +5,7 @@ const errorhandler = (error, req, res, next) => {
       status_code: 0,
       status_message: error.message,
     },
+    data: [],
   });
   next();
 };

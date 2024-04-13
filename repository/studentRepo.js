@@ -56,7 +56,6 @@ const loginRepo = async (req, res, next) => {
     let { username, password } = req.body;
     mongoose.connect(connectionString.collegeErp_server);
     const user = await User.findOne({ username, password });
-    console.log(user);
     if (Object.keys(user).length === 0) {
       return res.status(200).json({
         meta: {
@@ -69,7 +68,6 @@ const loginRepo = async (req, res, next) => {
     let x = await User.findOneAndUpdate(
       { _id: user._id },
       { $set: { token: token } }
-      //   { new: true }
     );
     console.log(x);
     return res.status(200).json({

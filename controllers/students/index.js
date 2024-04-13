@@ -1,11 +1,6 @@
 const express = require("express");
 const { UserLogin, addNewUser } = require("../../models/student");
 const {
-  generateJWTToken,
-  verifyJWTToken,
-  rngfc,
-} = require("../../utils/commonFunction");
-const {
   addNewUserRepo,
   loginRepo,
   getProfileDetailRepo,
@@ -13,7 +8,6 @@ const {
 } = require("../../repository/studentRepo");
 const connectDb = require("../../database");
 const studentRouter = express.Router();
-const students = [];
 studentRouter.get("/test", (req, res) => {
   let sortBy = req.query.sortBy;
   if (sortBy === "1") {
