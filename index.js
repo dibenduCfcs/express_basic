@@ -4,15 +4,11 @@ const cors = require('cors')
 const app = express();
 const globalRouter = require("./route");
 const errorhandler = require("./utils/errorhandler");
-const connectDb = require("./database");
+const { connectionString } = require("./constants");
+const mongoose  = require("mongoose");
 
-connectDb()
-  .then((res) => {
-    console.log("Connected..");
-  })
-  .catch(() => {
-    console.log("Error..");
-  });
+mongoose.connect(connectionString.collegeErp_server);
+
 app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());

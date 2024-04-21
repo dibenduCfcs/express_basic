@@ -5,8 +5,8 @@ const { CategoryModal, SubCategoryModal } = require("../models/category");
 const addUpdateCategoryRepo = async (req, res, next) => {
   try {
     const { catId, catName, catImage, activeStatus } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
-    console.log("first", catId);
+    // mongoose.connect(connectionString.collegeErp_server);
+
     if (catId === "0000000000000000000000") {
       const category = await CategoryModal.insertMany([
         { catName, catImage, activeStatus },
@@ -74,7 +74,7 @@ const getAllCategoryListAdmin = async (req, res, next) => {
   try {
     const { catId, search, paging } = req.body;
     const skip = paging.pageSize * (paging.pageNo - 1);
-    mongoose.connect(connectionString.collegeErp_server);
+    // mongoose.connect(connectionString.collegeErp_server);
     const query = search ? { catName: { $regex: new RegExp(search, 'i') } } : {};
 
     const totalCount = await CategoryModal.countDocuments(query);
@@ -141,7 +141,7 @@ const getAllSubCategoryListAdmin = async (req, res, next) => {
 
 const deleteCategoryById = async (req, res, next, isCategory) => {
   try {
-    mongoose.connect(connectionString.collegeErp_server);
+    // mongoose.connect(connectionString.collegeErp_server);
     const { id } = req.body;
     let response = null;
     if (isCategory) {

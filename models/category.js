@@ -13,6 +13,7 @@ const subCategorySchema = new Schema({
   activeStatus: String,
 });
 
+
 const CategoryModal = model("Category", categorySchema);
 const SubCategoryModal = model("SubCategory", subCategorySchema);
 
