@@ -4,13 +4,13 @@ const { Schema, model } = require("mongoose");
 const categorySchema = new Schema({
   catName: String,
   catImage: String,
-  activeStatus: String,
+  activeStatus: Boolean,
 });
 
 const subCategorySchema = new Schema({
   subCatName: String,
   catId: String,
-  activeStatus: String,
+  activeStatus: Boolean,
 });
 
 
