@@ -80,7 +80,9 @@ const getAllCategoryListAdmin = async (req, res, next) => {
     const totalCount = await CategoryModal.countDocuments(query);
     const categoryList = (
       await CategoryModal.find(query).skip(skip).limit(paging.pageSize)
-    );
+    ).map(item=>{
+      return {catId:item._id,catName:item.catName,catImage:item.catImage,activeStatus:item.activeStatus};
+    });
     const nextPageAvailable = (skip + categoryList.length) < totalCount;
 
     if (categoryList) {
