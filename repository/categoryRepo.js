@@ -76,6 +76,7 @@ const getAllCategoryListAdmin = async (req, res, next) => {
     const skip = paging.pageSize * (paging.pageNo - 1);
     mongoose.connect(connectionString.collegeErp_server);
     const query = search ? { catName: { $regex: new RegExp(search, 'i') } } : {};
+    
     const totalCount = await CategoryModal.countDocuments(query);
     const categoryList = (
       await CategoryModal.find(query).skip(skip).limit(paging.pageSize)
