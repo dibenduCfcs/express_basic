@@ -75,18 +75,20 @@ const getAllCategoryListAdmin = async (req, res, next) => {
     const { catId, search, paging } = req.body;
     const skip = paging.pageSize * (paging.pageNo - 1);
     mongoose.connect(connectionString.collegeErp_server);
+    const query = search ? { catName: { $regex: new RegExp(search, 'i') } } : {};
+    const totalCount = await YourModel.countDocuments(query);
     const categoryList = (
-      await CategoryModal.find({}).skip(skip).limit(paging.pageSize)
-    ).filter((item) => {
-      return item.catName.includes(search);
-    });
+      await CategoryModal.find(query).skip(skip).limit(paging.pageSize)
+    );
+    const nextPageAvailable = (skip + data.length) < totalCount;
+
     if (categoryList) {
       return res.status(200).json({
         meta: {
           status_code: 1,
           status_message: "Category List",
         },
-        data: { list: categoryList },
+        data: {pageNo:paging.pageNo, nextPageAvailable, noOfData:totalCount, data: categoryList },
       });
     } else {
       return res.status(200).json({
@@ -94,7 +96,7 @@ const getAllCategoryListAdmin = async (req, res, next) => {
           status_code: 1,
           status_message: "Category  Successfully.",
         },
-        data: [],
+        data: {pageNo:paging.pageNo, nextPageAvailable, noOfData:totalCount, data: categoryList }
       });
     }
   } catch (error) {
