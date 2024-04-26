@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const coursesRepo = require("../repository/coursesRepo");
 const { singingKey } = require("../constants");
-
+const fs = require('fs');
+const path = require('path');
 const rngfc = () => {
   let number = Math.floor(Math.random() * 9000) + 1000;
   let findIndex = coursesRepo.findIndex((item) => item._id === number);
@@ -43,4 +44,33 @@ const verifyJWTToken = (token) => {
   });
 };
 
-module.exports = { rngfc, validateBody, generateJWTToken, verifyJWTToken };
+const base64Save = (base64Data,name,pathName) => {
+  const base64Image = base64Data.replace(/^data:image\/\w+;base64,/, '');
+  const filename = `${name}.png`;
+
+  const directoryPath = path.join( pathName);
+  const filePath = path.join(directoryPath, filename);
+
+
+  if (!fs.existsSync(directoryPath)){
+    fs.mkdirSync(directoryPath, { recursive: true });
+  }
+
+  fs.writeFile(filePath, base64Image, { encoding: 'base64' }, (err) => {
+    if (err) {
+      console.error(err);
+      
+    } else {
+      console.log('Image saved successfully:', filename);
+     
+    }
+  });
+}
+
+const generateUniqueFileName=(originalFileName)=> {
+  const timestamp = Date.now(); // Get current timestamp
+  const uniqueIdentifier = Math.random().toString(36).substring(7); // Generate random string
+  return `${uniqueIdentifier}_${timestamp}`; // Combine parts to form unique file name
+}
+
+module.exports = { rngfc, validateBody, generateJWTToken, verifyJWTToken,base64Save ,generateUniqueFileName};

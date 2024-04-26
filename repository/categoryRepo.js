@@ -1,15 +1,14 @@
-const mongoose = require("mongoose");
-const { connectionString } = require("../constants");
-const { CategoryModal, SubCategoryModal } = require("../models/category");
+ const { CategoryModal, SubCategoryModal } = require("../models/category");
+const { base64Save, generateUniqueFileName } = require("../utils/commonFunction");
 
 const addUpdateCategoryRepo = async (req, res, next) => {
   try {
     const { catId, catName, catImage, activeStatus } = req.body;
-    // mongoose.connect(connectionString.collegeErp_server);
-
     if (catId === "0000000000000000000000") {
+      let imageName = generateUniqueFileName(`${catImage}`);
+      base64Save(catImage,imageName,`static/dev/images/category`);
       const category = await CategoryModal.insertMany([
-        { catName, catImage, activeStatus },
+        { catName, catImage:`${imageName}.png`, activeStatus },
       ]);
 
       return res.status(200).json({
@@ -39,7 +38,6 @@ const addUpdateCategoryRepo = async (req, res, next) => {
 const addUpdateSubCategoryRepo = async (req, res, next) => {
   try {
     const { subCatId, catId, subCatName, activeStatus } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
     if (subCatId === "0000000000000000000000") {
       const category = await SubCategoryModal.insertMany([
         { catId, subCatName, activeStatus },
@@ -74,7 +72,6 @@ const getAllCategoryListAdmin = async (req, res, next) => {
   try {
     const { catId, search, paging } = req.body;
     const skip = paging.pageSize * (paging.pageNo - 1);
-    // mongoose.connect(connectionString.collegeErp_server);
     const query = search ? { catName: { $regex: new RegExp(search, 'i') } } : {};
 
     const totalCount = await CategoryModal.countDocuments(query);
@@ -91,8 +88,15 @@ const getAllCategoryListAdmin = async (req, res, next) => {
           status_code: 1,
           status_message: "Category List",
         },
-        data: {pageNo:paging.pageNo, nextPageAvailable, noOfData:totalCount, data: categoryList },
-      });
+        data: {
+          pageNo:paging.pageNo, 
+          nextPageAvailable, 
+          noOfData:totalCount, 
+          data: {
+            ...categoryList.map(item=>{return {...item,catImage:'/images/category/'+item.catImage}}) },
+      }
+    }
+    );
     } else {
       return res.status(200).json({
         meta: {
@@ -110,7 +114,6 @@ const getAllSubCategoryListAdmin = async (req, res, next) => {
   try {
     const { catId, search, paging } = req.body;
     const skip = paging.pageSize * (paging.pageNo - 1);
-    mongoose.connect(connectionString.collegeErp_server);
     let findParams = catId === "" ? {} : { catId };
     const list = (
       await SubCategoryModal.find(findParams).skip(skip).limit(paging.pageSize)
@@ -141,7 +144,6 @@ const getAllSubCategoryListAdmin = async (req, res, next) => {
 
 const deleteCategoryById = async (req, res, next, isCategory) => {
   try {
-    // mongoose.connect(connectionString.collegeErp_server);
     const { id } = req.body;
     let response = null;
     if (isCategory) {
