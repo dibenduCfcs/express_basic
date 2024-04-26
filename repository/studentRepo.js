@@ -15,7 +15,7 @@ const User = mongoose.model("User", userSchema);
 const addNewUserRepo = async (req, res, next) => {
   try {
     let { username, password, name, email, mobile } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
+    
     const user = await User.findOne({ username, password });
     console.log(user);
     if (user) {
@@ -54,7 +54,7 @@ const addNewUserRepo = async (req, res, next) => {
 const loginRepo = async (req, res, next) => {
   try {
     let { username, password } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
+    
     const user = await User.findOne({ username, password });
     if (Object.keys(user).length === 0) {
       return res.status(200).json({
@@ -89,7 +89,7 @@ const getProfileDetailRepo = async (req, res, next) => {
   let token = authorization.replace("Bearer", "").trim();
   try {
     let { userId } = verifyJWTToken(token);
-    mongoose.connect(connectionString.collegeErp_server);
+    
     const user = await User.findOne({ _id: userId, token }).select({
       _id: 1,
       name: 1,
@@ -119,7 +119,7 @@ const getProfileDetailRepo = async (req, res, next) => {
 };
 const getAllStudentRepo = async (req, res, next) => {
   try {
-    mongoose.connect(connectionString.collegeErp_server);
+    
     const users = await User.find({}).select({
       _id: 1,
       name: 1,

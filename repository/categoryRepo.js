@@ -1,12 +1,13 @@
  const { CategoryModal, SubCategoryModal } = require("../models/category");
-const { base64Save, generateUniqueFileName } = require("../utils/commonFunction");
+const { base64Save, generateUniqueFileName, isProduction } = require("../utils/commonFunction");
 
 const addUpdateCategoryRepo = async (req, res, next) => {
   try {
     const { catId, catName, catImage, activeStatus } = req.body;
     if (catId === "0000000000000000000000") {
       let imageName = generateUniqueFileName(`${catImage}`);
-      base64Save(catImage,imageName,`static/dev/images/category`);
+      let path = isProduction ? 'static/prod':'static/dev';
+      base64Save(catImage,imageName,`${path}/images/category`);
       const category = await CategoryModal.insertMany([
         { catName, catImage:`${imageName}.png`, activeStatus },
       ]);

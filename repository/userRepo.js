@@ -6,7 +6,7 @@ const { generateJWTToken } = require("../utils/commonFunction");
 const loginUserRepo = async (req, res, next) => {
   try {
     const { mobileNumber } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
+    
     const user = await UserModal.findOne({ mobile: mobileNumber });
     if (user) {
       const token = generateJWTToken({ userId: user._id });

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const coursesRepo = require("../repository/coursesRepo");
-const { singingKey } = require("../constants");
+const singingKey = process.env.SingingKey;
 const fs = require('fs');
 const path = require('path');
 const rngfc = () => {
@@ -73,4 +73,14 @@ const generateUniqueFileName=(originalFileName)=> {
   return `${uniqueIdentifier}_${timestamp}`; // Combine parts to form unique file name
 }
 
-module.exports = { rngfc, validateBody, generateJWTToken, verifyJWTToken,base64Save ,generateUniqueFileName};
+const isProduction = (process.env.NODE_ENV || 'development') === 'production';
+const isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
+
+module.exports = { rngfc,
+   validateBody,
+    generateJWTToken,
+     verifyJWTToken,
+     base64Save ,
+     generateUniqueFileName,
+     isProduction,
+     isDevelopment};

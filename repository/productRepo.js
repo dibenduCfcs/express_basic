@@ -23,7 +23,7 @@ const addUpdateProductRepo = async (req, res, next) => {
       pageTitle,
       pageMetaDescription,
     } = req.body;
-    mongoose.connect(connectionString.collegeErp_server);
+    
     if (productId === "") {
       const product = await ProductModal.insertMany([
         {
