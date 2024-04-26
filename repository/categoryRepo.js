@@ -79,7 +79,7 @@ const getAllCategoryListAdmin = async (req, res, next) => {
     const categoryList = (
       await CategoryModal.find(query).skip(skip).limit(paging.pageSize)
     ).map(item=>{
-      return {catId:item._id,catName:item.catName,catImage:item.catImage,activeStatus:item.activeStatus};
+      return {catId:item._id,catName:item.catName,catImage:'/images/category/' +item.catImage,activeStatus:item.activeStatus};
     });
     const nextPageAvailable = (skip + categoryList.length) < totalCount;
 
@@ -93,9 +93,8 @@ const getAllCategoryListAdmin = async (req, res, next) => {
           pageNo:paging.pageNo, 
           nextPageAvailable, 
           noOfData:totalCount, 
-          data: {
-            ...categoryList.map(item=>{return {...item,catImage:'/images/category/'+item.catImage}}) },
-      }
+          data:categoryList,
+        }
     }
     );
     } else {
